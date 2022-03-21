@@ -40,6 +40,7 @@ const addBuilding = async function(req, res, next){
 
 const getBuilding = async function(req, res, next){
     console.log(req.params.id);
+    const buidling = await Building.findById(req.params.id)
     const isPass = await isBuildingSuccessUpdateById(buidling, res, req)
     if(!isPass)return
     res.status(200).json(building)
