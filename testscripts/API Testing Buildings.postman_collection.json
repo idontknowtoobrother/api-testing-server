@@ -1,0 +1,410 @@
+{
+	"info": {
+		"_postman_id": "99c5cf9f-bb68-435f-a12c-7a4bb278678e",
+		"name": "API Testing Buildings",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "buildings",
+			"item": [
+				{
+					"name": "GET /buildings",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status 200', function(){\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test('Is arrays response', function(){\r",
+									"    let data = pm.response.json()\r",
+									"    pm.expect(data).to.be.a('array')\r",
+									"})\r",
+									"\r",
+									"pm.test('Is arrays have 2 items', function(){\r",
+									"    let data = pm.response.json()\r",
+									"    console.log(data)\r",
+									"    pm.expect(data.length).to.eql(2)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/buildings",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"buildings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /buildings",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status 201', function(){\r",
+									"    pm.response.to.have.status(201)\r",
+									"})\r",
+									"\r",
+									"pm.test('Create building success', function(){\r",
+									"    let data = pm.response.json()\r",
+									"    pm.expect(data.name).to.eql('ตึกวิทยาศาสตร์เกม')\r",
+									"    pm.expect(data.level).to.eql(11)\r",
+									"    pm.environment.set(\"buildingId\", data._id)\r",
+									"    console.log(data._id)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "ตึกวิทยาศาสตร์เกม",
+									"type": "text"
+								},
+								{
+									"key": "level",
+									"value": "11",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/buildings",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"buildings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /buildings Check Duplicate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status 409 Can\\'t duplicate building', function(){\r",
+									"    pm.response.to.have.status(409)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "ตึกวิทยาศาสตร์เกม",
+									"type": "text"
+								},
+								{
+									"key": "level",
+									"value": "11",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/buildings",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"buildings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get /buildings/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status 200', function(){\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test(`Is building ${pm.environment.get('buildingId')} valid`, function(){\r",
+									"    let data = pm.response.json()\r",
+									"    pm.expect(data._id).to.eql(pm.environment.get('buildingId'))\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/buildings/{{buildingId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"buildings",
+								"{{buildingId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT /building/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status 200', function(){\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test('Create building success', function(){\r",
+									"    let data = pm.response.json()\r",
+									"    pm.expect(data.name).to.eql('ตึกคณะวิศวกรรม')\r",
+									"    pm.expect(data.level).to.eql(20)\r",
+									"    pm.environment.set(\"buildingId\", data._id)\r",
+									"    console.log(data)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "_id",
+									"value": "{{buildingId}}",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "ตึกคณะวิศวกรรม",
+									"type": "text"
+								},
+								{
+									"key": "level",
+									"value": "20",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/buildings/{{buildingId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"buildings",
+								"{{buildingId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH /building/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status 200', function(){\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test('Create building success', function(){\r",
+									"    let data = pm.response.json()\r",
+									"    pm.expect(data.name).to.eql('ตึกคณะวิศวกรรม')\r",
+									"    pm.expect(data.level).to.eql(156)\r",
+									"    pm.environment.set(\"buildingId\", data._id)\r",
+									"    console.log(data)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "_id",
+									"value": "{{buildingId}}",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "ตึกคณะวิศวกรรม",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "level",
+									"value": "156",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/buildings/{{buildingId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"buildings",
+								"{{buildingId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /building/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(`Status 200 delete building by _id: ${pm.environment.get('buildingId')}`, function(){\r",
+									"    pm.response.to.have.status(200)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/buildings/{{buildingId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"buildings",
+								"{{buildingId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT /building/:id no object",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status 404', function(){\r",
+									"    pm.response.to.have.status(404)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{url}}/buildings/{{buildingId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"buildings",
+								"{{buildingId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH /building/:id no object",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status 404', function(){\r",
+									"    pm.response.to.have.status(404)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{url}}/buildings/{{buildingId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"buildings",
+								"{{buildingId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
