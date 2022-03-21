@@ -43,7 +43,7 @@ const getBuilding = async function(req, res, next){
     const buidling = await Building.findById(req.params.id)
     const isPass = await isBuildingSuccessUpdateById(buidling, res, req)
     if(!isPass)return
-    res.status(200).json(building)
+    res.status(200).json(buidling)
 }
 
 const updateBuilding = async function(req, res, next){
